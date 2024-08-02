@@ -1,0 +1,26 @@
+BUILD_TARGET_FOLDERS = arch kernel 
+
+COMMON_SOURCEFOLDER = src
+COMMON_HEADERFOLDER = include
+
+ARCHFOLDER         = arch
+KERNELFOLDER       = kernel
+LOADERFOLDER       = loader
+ROOTBINARYFOLDER   = bin
+KERNELBINARYFOLDER = kernel_objs
+USERBINARYFOLDER   = user_objs
+
+BUILD_KERNEL_IMG_MAKEFILE = build_kernel.mk
+
+KERNEL_ELF   = Kernel
+KERNEL_IMG   = Kernel.bin
+
+KERNEL_AS = $(AS)
+KERNEL_CC = $(KERNEL_COMPILER)-$(CC)
+KERNEL_LD = $(KERNEL_COMPILER)-$(LD)
+KERNEL_OBJDUMP = $(KERNEL_COMPILER)-$(OBJDUMP)
+KERNEL_OBJCOPY = $(KERNEL_COMPILER)-$(OBJCOPY)
+
+# commonly used things
+
+PWD = $(shell pwd)
