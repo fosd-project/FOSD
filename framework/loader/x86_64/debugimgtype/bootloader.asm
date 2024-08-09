@@ -8,8 +8,10 @@
     jmp 0x07C0:start
 
 boot_drive:              db 0x00
-kernel_loader_location:  dw 0x4000
+kernel_loader_location:  dw 0x1000
 kernel_loader_size:      dd 4
+kernel_location:         dw 0x2000
+kernel_size:             dd 4
 
 start:
     mov ax , 0x07C0
@@ -33,24 +35,47 @@ start:
     mov dh , 0x00
     mov cl , 2 ; sector location of kernel loader
     mov dl , [boot_drive]
-    
+
     int 0x13
 
     jc failed
 
+    xor cx , cx
+    mov es , cx
+    mov bx , [kernel_location]
+
+    mov ah , 0x02
+    mov al , [kernel_size]
+    mov ch , 0x00
+    mov dh , 0x00
+    mov cl , 0x02
+    add cl , [kernel_loader_size]
+
+    mov dl , [boot_drive]
+    
+    int 0x13
+
+    jc failed
+    
+    cli
+
+    ; Enable A20 gate
 	mov eax , 0x2401
 	int 0x15
 
     ; switch to protect mode
-    lgdt [pmode_gdtr]
-    
-    cli
 
     mov eax , cr0
     or eax , 0x01
     mov cr0 , eax
+    
+    lgdt [pmode_gdtr]
 
-    jmp 0x08:(pmem_entry+0x7C00)
+    ; store the kernel's location and size to the registers
+    mov di , word[kernel_location]
+    mov si , word[kernel_size]
+    
+    jmp 0x08:0x1000
 
 failed:
     mov ax , 0xB800
@@ -98,20 +123,6 @@ pmode_gdt_end:
 pmode_gdtr:
     .size: dw pmode_gdt_end-pmode_gdt
     .offset: dd pmode_gdt+0x7C00
-
-[BITS 32]
-
-pmem_entry:
-    mov ax , 0x10
-    mov ds , ax
-    mov es , ax
-    mov fs , ax
-    mov gs , ax
-    mov ss , ax
-    
-    jmp 0x08:0x4000
-
-    jmp $
 
 times (510-($-$$)) db 0x00
 dw 0xAA55
