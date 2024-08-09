@@ -1,0 +1,52 @@
+#ifndef _PAGING_H_
+#define _PAGING_H_
+
+
+#define PAGE_SIZE                0x200000
+
+#define PAGE_MAX_ENTRY_COUNT     512
+#define PAGE_PML4ENTRY_FLAGS_P   0b000000000001
+#define PAGE_PML4ENTRY_FLAGS_RW  0b000000000010
+#define PAGE_PML4ENTRY_FLAGS_US  0b000000000100
+#define PAGE_PML4ENTRY_FLAGS_PWT 0b000000001000
+#define PAGE_PML4ENTRY_FLAGS_PCD 0b000000010000
+#define PAGE_PML4ENTRY_FLAGS_A   0b000000100000
+#define PAGE_PML4ENTRY_FLAGS_EXB 0b100000000000
+
+#define PAGE_PDPTENTRY_FLAGS_P   0b00000000000001
+#define PAGE_PDPTENTRY_FLAGS_RW  0b00000000000010
+#define PAGE_PDPTENTRY_FLAGS_US  0b00000000000100
+#define PAGE_PDPTENTRY_FLAGS_PWT 0b00000000001000
+#define PAGE_PDPTENTRY_FLAGS_PCD 0b00000000010000
+#define PAGE_PDPTENTRY_FLAGS_A   0b00000000100000
+#define PAGE_PDPTENTRY_FLAGS_D   0b00000001000000 // Ignored when PDPTE references Page Directory
+#define PAGE_PDPTENTRY_FLAGS_PS  0b00000010000000 // Page size, 1 = 1GB page, 0 = 2MB or 4KB page.
+#define PAGE_PDPTENTRY_FLAGS_G   0b00000100000000 // 
+#define PAGE_PDPTENTRY_FLAGS_PAT 0b01000000000000
+#define PAGE_PDPTENTRY_FLAGS_EXB 0b10000000000000
+
+#define PAGE_PDENTRY_FLAGS_P     0b00000000000001
+#define PAGE_PDENTRY_FLAGS_RW    0b00000000000010
+#define PAGE_PDENTRY_FLAGS_US    0b00000000000100
+#define PAGE_PDENTRY_FLAGS_PWT   0b00000000001000
+#define PAGE_PDENTRY_FLAGS_PCD   0b00000000010000
+#define PAGE_PDENTRY_FLAGS_A     0b00000000100000
+#define PAGE_PDENTRY_FLAGS_D     0b00000001000000
+#define PAGE_PDENTRY_FLAGS_PS    0b00000010000000
+#define PAGE_PDENTRY_FLAGS_G     0b00000100000000
+#define PAGE_PDENTRY_FLAGS_EXB   0b10000000000000
+
+#define PAGE_GET_PML4ENTRY_NUM(addr)  (((addr) >> 39) & 0x1FF)
+#define PAGE_GET_PDPTENTRY_NUM(addr)  (((addr) >> 30) & 0x1FF)
+#define PAGE_GET_PDENTRY_NUM(addr)    (((addr) >> 21) & 0x1FF)
+#define PAGE_GET_OFFSET(addr)         ((addr) & 0x1FFFFF) 
+
+typedef struct {
+    unsigned int baseaddress_low_flags;
+    unsigned int baseaddress_high;
+}page_entry_t;
+
+void set_page_entry(page_entry_t *page_entry , unsigned int baseaddr_low , unsigned int baseaddr_high , unsigned short flags);
+void setup_pml4(unsigned long pml4_table_address , int pdpt_entry_count);
+
+#endif
