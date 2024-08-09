@@ -3,3 +3,4 @@ test_*.cpp
 bin/
 OS.*
 *.code-workspace
+debug.log
