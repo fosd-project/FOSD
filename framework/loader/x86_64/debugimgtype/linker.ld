@@ -1,8 +1,11 @@
 OUTPUT_FORMAT(elf32-i386)
-ENTRY(loader_main)
+ENTRY(entry)
+
 SECTIONS {
-  . = 0x4000;
-  .text 0x4000 : {
+  . = 0x1000;
+  .text 0x1000 : {
+    *(.entry)
+    
     *(.text .stub .text.* .gnu.linkonce.t.*)
   }
   .data : {
