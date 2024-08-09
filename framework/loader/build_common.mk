@@ -23,7 +23,7 @@ include $(ROOTDIR)/global_variables.mk
 
 BINARYFOLDER = $(ROOTDIR)/$(ROOTBINARYFOLDER)/$(LOADERFOLDER)/$(ARCH)/$(IMAGE)
 
-clean:
+clean: remove_target
 	rm -rf $(BINARYFOLDER)
 
 AUTO_CC_TARGETS = $(subst .$(C_EXTENSION),.obj,$(wildcard $(SOURCESFOLDER)/*.$(C_EXTENSION)))
@@ -43,7 +43,7 @@ build_objects:
 
 %.obj: %.$(C_EXTENSION)
 	$(LOADER_CC) -c $< -o $(subst $(SOURCESFOLDER),$(BINARYFOLDER),$@) $(LOADER_CCOPTIONS)\
-		$(addprefix  -I ,$(INCLUDEPATHS))
+		$(addprefix  -I ,$(INCLUDEPATHS)) -I $(ARCH_CONFIGURATION_FILE_LOC)
 
 %.aobj: %.$(AS_EXTENSION)
-	$(LOADER_AS) $(COMMON_SOURCEFOLDER)/$@ -o $(MAINBINARYFOLDER)/$(subst .asm,.obj,$@)
+	$(LOADER_AS) $< -o $(subst $(SOURCESFOLDER),$(BINARYFOLDER),$@) $(LOADER_ASOPTIONS)
