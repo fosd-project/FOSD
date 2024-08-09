@@ -23,7 +23,7 @@ clean: remove_binaries
 	for build_dir in $(BUILD_TARGET_FOLDERS); do\
 		make -C $$build_dir clean $(MAKEFILE_ARGUMENTS); \
 	done
-	make -C $(LOADERFOLDER)/$(ARCH)/$(IMAGE) clean $(MAKEFILE_ARGUMENTS)
+	make -C $(LOADERFOLDER)/$(ARCH)/$(IMAGE) clean $(MAKEFILE_ARGUMENTS) TARGET_DIR=$(ROOTDIR)/..
 
 all: prepare build_all_directories build_kernel build_loader
 build_framework: prepare build_all_directories
