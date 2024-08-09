@@ -27,6 +27,6 @@ clean:
 		$(addprefix  -I ,$(INCLUDEPATHS))
 
 %.aobj: %.asm
-	$(KERNEL_AS) $(COMMON_SOURCEFOLDER)/$@ -o $(BINARYFOLDER)/$(subst .asm,.obj,$@) $(KERNEL_ASOPTIONS)
+	$(KERNEL_AS) $< -o $(subst $(COMMON_SOURCEFOLDER),$(BINARYFOLDER),$@) $(KERNEL_ASOPTIONS)
 
 .PHONY: clean all
