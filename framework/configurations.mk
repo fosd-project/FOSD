@@ -13,6 +13,8 @@ KERNEL_LDOPTIONS = -m elf_x86_64 -nostdlib
 
 KERNEL_ASOPTIONS = -f elf64
 
+USERSOURCE_INCLUDEPATH = 
+
 # compiler settings
 
 AS = nasm
