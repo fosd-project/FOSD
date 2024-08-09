@@ -13,7 +13,7 @@ LOADER_CCOPTIONS = -m32 -Os -masm=intel -fno-builtin -fpack-struct=1 -fno-stack-
 	-Wno-int-to-pointer-cast \
 	-W -Wall
 LOADER_ASOPTIONS = -f elf32
-LOADER_LDOPTIONS = -m elf_i386
+LOADER_LDOPTIONS = -m elf_i386 -z noexecstack
 LOADER_LINKERSCRIPT = linker.ld
 LOADER_LD_OUT = $(BINARYFOLDER)/loader32.elf
 
@@ -25,13 +25,18 @@ INCLUDEPATHS = include
 
 LINK_OBJECTS = yes
 
+TARGET = OS.img
+
+remove_target:
+	rm -rf $(TARGET_DIR)/$(TARGET)
+
 build_bootloader:
 	$(LOADER_AS) bootloader.asm -f bin -o $(BINARYFOLDER)/bootloader.bin
 
 build_final_image:
 	$(LOADER_OBJCOPY) -O binary $(LOADER_LD_OUT) $(BINARYFOLDER)/loader32.bin
 
-	./imgmaker $(TARGET_DIR)/OS.img $(BINARYFOLDER)/bootloader.bin $(BINARYFOLDER)/loader32.bin $(KERNEL_IMG)
+	./imgmaker $(TARGET_DIR)/$(TARGET) $(BINARYFOLDER)/bootloader.bin $(BINARYFOLDER)/loader32.bin 4 $(KERNEL_IMG) 4
 
-include ../build_common.mk
+include ../../build_common.mk
 	
