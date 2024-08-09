@@ -1,4 +1,5 @@
 FRAMEWORKFOLDER = framework
+USERSOURCEFOLDER = ?
 
 include $(FRAMEWORKFOLDER)/global_variables.mk
 include $(FRAMEWORKFOLDER)/configurations.mk
@@ -7,6 +8,7 @@ BINARYFOLDER = $(FRAMEWORKFOLDER)/$(ROOTBINARYFOLDER)/$(USERBINARYFOLDER)
 
 INCLUDEPATHS = . $(ARCHFOLDER)/$(ARCH)/$(COMMON_HEADERFOLDER) $(KERNELFOLDER)/$(COMMON_HEADERFOLDER)
 
+# Compile targets for user sources
 MAINTARGETS = $(subst .cpp,.obj,$(wildcard *.cpp) $(wildcard */*.cpp))
 ASMTARGETS = $(subst .asm,.aobj,$(wildcard *.asm))
 
