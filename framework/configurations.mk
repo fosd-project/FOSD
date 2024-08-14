@@ -13,7 +13,8 @@ KERNEL_LDOPTIONS = -m elf_x86_64 -nostdlib
 
 KERNEL_ASOPTIONS = -f elf64
 
-USERSOURCE_INCLUDEPATH = 
+USER_SOURCESPATH  = examples/x86_64/HelloWorld
+USER_INCLUDEPATH  = 
 
 # compiler settings
 
