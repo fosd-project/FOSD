@@ -18,6 +18,10 @@ entry:
     mov esp , 0x9FF8
     mov ebp , 0x9FF8
 
+    ; convert the 16bit segment addressing to the physical address
+    imul edx , 16
+    add edi , edx
+
     push esi
     push edi
     call loader_main
