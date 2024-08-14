@@ -43,7 +43,7 @@ build_objects:
 
 %.obj: %.$(C_EXTENSION)
 	$(LOADER_CC) -c $< -o $(subst $(SOURCESFOLDER),$(BINARYFOLDER),$@) $(LOADER_CCOPTIONS)\
-		$(addprefix  -I ,$(INCLUDEPATHS)) -I $(ARCH_CONFIGURATION_FILE_LOC)
+		$(addprefix  -I,$(INCLUDEPATHS)) -I$(ROOTDIR)/$(ARCH_CONFIGURATION_FILE_LOC)
 
 %.aobj: %.$(AS_EXTENSION)
 	$(LOADER_AS) $< -o $(subst $(SOURCESFOLDER),$(BINARYFOLDER),$@) $(LOADER_ASOPTIONS)
