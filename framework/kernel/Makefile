@@ -13,7 +13,8 @@ MAINTARGETS = $(subst .cpp,.obj,$(wildcard $(COMMON_SOURCEFOLDER)/*.cpp) $(wildc
 ASMTARGETS = $(subst .asm,.aobj,$(wildcard $(COMMON_SOURCEFOLDER)/*.asm))
 SUBDIRECTORIES = $(subst $(COMMON_SOURCEFOLDER),$(MAINBINARYFOLDER),$(sort $(dir $(wildcard $(COMMON_SOURCEFOLDER)/*/))))
 INCLUDEPATHS = $(ROOTDIR)/$(ARCHFOLDER)/$(ARCH)/$(COMMON_HEADERFOLDER) \
-			   $(COMMON_HEADERFOLDER)
+			   $(COMMON_HEADERFOLDER) \
+			   ../$(ARCH_CONFIGURATION_FILE_LOC)
 
 all: prepare $(ASMTARGETS) $(MAINTARGETS)
 
@@ -28,7 +29,7 @@ clean:
 
 %.obj: %.cpp
 	$(KERNEL_CC) -c $< -o $(subst $(COMMON_SOURCEFOLDER),$(MAINBINARYFOLDER),$@) $(KERNEL_CCOPTIONS)\
-		$(addprefix  -I ,$(INCLUDEPATHS))
+		$(addprefix  -I,$(INCLUDEPATHS))
 
 %.aobj: %.asm
 	$(KERNEL_AS) $< -o $(subst $(COMMON_SOURCEFOLDER),$(MAINBINARYFOLDER),$@) $(KERNEL_ASOPTIONS)
