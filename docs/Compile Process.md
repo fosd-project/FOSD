@@ -1,4 +1,4 @@
-# The FOSD Framework
+# The FOSD Framework Specification: The Compile Process
 ## Overview
 The framework consists of two main parts: the **Kernel Image** and the **Loader**. The kernel image is compiled with the **core kernel sources**(located in "kernel" folder), **architecture-dependent sources**(located in "arch" folder), and **user-side sources**(located in the root directory of the project.) All the sources(sources of kernel, architecture and user) are all compiled into object files, and all those objects are linked into one kernel image using the linker script. Finally, the kernel loader is compiled and combined with the compiled kernel image, creating the final operating system image.
 
@@ -100,8 +100,43 @@ Following variables are designated to be customized by the user :
  * **KERNEL_LDOPTIONS** : Compiler options for the linker
  * **KERNEL_ASOPTIONS** : Compiler options for the assembler
  * **KERNEL_LINKERSCRIPT** : The linker script file name
+ * **USER_SOURCESPATH** : Directory location of user's sources
+ * **USER_INCLUDEPATH** : Directory location of user's includepaths
 
-### Detailed Compile Process of the Kernel
+The **"ARCH"** variable points to the architecture folder to be compiled in the "arch" folder. Similarly, the **"IMAGE"** variable points to the loader folder to be compiled in the loader's architecture folder. 
+
+Following is an example of "configurations.mk" file : 
+```makefile
+ARCH = x86_64
+IMAGE = iso
+
+KERNEL_COMPILER  = x86_64-elf
+KERNEL_CCOPTIONS = -m64 -ffreestanding -nostdlib -mcmodel=large \
+-mcmodel=large -mno-red-zone -mno-mmx -mno-sse -mno-sse2 \
+-fpack-struct=1 -masm=intel ...
+KERNEL_LINKERSCRIPT    = linker.ld
+KERNEL_LDOPTIONS       = -m elf_x86_64 -nostdlib
+
+# The directory to the user's sources and include from the root project directory
+USER_SOURCESPATH = ...
+USER_INCLUDEPATH = ...
+...
+```
+### Detailed Compile Process of the Framework
+### 1. The Compiling Process of Kernel
+#### The "framework.mk" Makefile
+The compiling of the operating system can be initiated by the [**"framework.mk"**](https://github.com/fosd-project/FOSD/blob/core/framework/framework.mk) Makefile. The "framework.mk" first compiles the user's source codes and then the full operating system combined with the framework sources.  
+
+"framework.mk" consists of following sections: 
+- **clean** : Clean all the object files and target operating system image
+- **all**   : Compile the full operating system
+- **build_os** : Only compile the framework, not the user's sources
+<!-- This is kinda wrong.. -->
+
+"framework.mk" file uses the [Makefile located on the framework root directory](https://github.com/fosd-project/FOSD/blob/core/framework/Makefile) to build the framework's kernel and loader. 
+#### The Central Makefile of the Framework
+[The central makefile of the framework](https://github.com/fosd-project/FOSD/blob/core/framework/Makefile) reads the configuration variables from the **configurations.mk** and compiles the operating system according to the variables. The makefile sequentially compiles architecture and kernel and builds the kernel image using **the "build_kernel.mk" makefile.** The makefile then initiates the compilation of the loader, synthesizing the final operating system image. 
+
 #### The "build_kernel.mk" Makefile
 As the method of building the final kernel image from the C/C++ objects are dependent to the architecture, **build_kernel.mk** is created to account for the difference in the method. Each architecture must contain "build_kernel.mk" that describes the linking method. 
 
@@ -113,8 +148,24 @@ include $(ROOTDIR)/global_variables.mk
 build_kernel:
     [commands for building the kernel image from compiled objects]
 ```
+The commands for linking the kernel objects must be implemented on the "build_kernel" section of the makefile. 
 
+Following is the list of several variables passed onto the "build_kernel.mk" makefile : 
+- **TARGET_OBJECTS** : Object files that are to be linked
+- **KERNEL_ELF** : The target ELF file of the kernel image
+- **KERNEL_IMG** : The final target kernel image
 
-### Detailed Compile Process of the Architecture
+"build_kernel.mk" must compile the objects passed onto the pre-declared variable into the final kernel image, also its path passed onto the variable. 
 
-##
+(An example of "build_kernel.mk" implementation on x86_64 architecture : )
+```makefile
+include $(ROOTDIR)/configurations.mk
+include $(ROOTDIR)/global_variables.mk
+
+build_kernel:
+	x86_64-elf-ld $(KERNEL_LDOPTIONS)
+        -T $(ARCHFOLDER)/$(ARCH)/$(KERNEL_LINKERSCRIPT) $(TARGET_OBJECTS) 
+        -o $(KERNEL_ELF)
+	x86_64-elf-objcopy -O binary $(KERNEL_ELF) $(KERNEL_IMG)
+```
+### 2. The Compiling Process of the OS Image(and Loader)
