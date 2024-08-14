@@ -1,10 +1,14 @@
 OUTPUT_FORMAT(elf64-x86-64)
 ENTRY(entry)
 
+INCLUDE arch_configurations.ld
+
 SECTIONS {
-  . = 0x200000;
-  .text 0x200000 : {
+  . = _KERNEL_LOAD_LOCATION;
+  .entry _KERNEL_LOAD_LOCATION : {
     *(.entry)
+  }
+  .text : {
     *(.text .text.*)
   }
   .data : {
