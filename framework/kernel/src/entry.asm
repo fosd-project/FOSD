@@ -13,6 +13,10 @@ entry:
     mov gs , ax
     mov ss , ax
 
+    ; Temporary stack
+    mov rbp , 0x4FFFF8
+    mov rsp , 0x4FFFF8
+
     call kernel_init
 
     jmp $
