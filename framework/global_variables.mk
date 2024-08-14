@@ -24,4 +24,11 @@ KERNEL_OBJCOPY = $(KERNEL_COMPILER)-$(OBJCOPY)
 # commonly used things
 
 PWD = $(shell pwd)
-ARCH_CONFIGURATION_FILE_LOC = $(ROOTDIR)/$(ARCHFOLDER)
+ARCH_CONFIGURATION_FILE_LOC     = $(ARCHFOLDER)/$(ARCH)
+ARCH_CONFIGURATION_FILE         = arch_configurations.hpp
+
+define convert_hpp_to_ld
+	echo \#include \"$(notdir $(2))\" > $(dir $(2))dummy.ld
+	$(KERNEL_CC) -E -P -xc -DLINKER_SCRIPT $(dir $(2))dummy.ld > $(subst .hpp,.ld,$(2))
+	rm $(dir $(2))dummy.ld
+endef
