@@ -36,7 +36,7 @@ build_bootloader:
 build_final_image:
 	$(LOADER_OBJCOPY) -O binary $(LOADER_LD_OUT) $(BINARYFOLDER)/loader32.bin
 
-	./imgmaker $(TARGET_DIR)/$(TARGET) $(BINARYFOLDER)/bootloader.bin $(BINARYFOLDER)/loader32.bin 4 $(KERNEL_IMG) 4
+	./imgmaker $(TARGET_DIR)/$(TARGET) $(BINARYFOLDER)/bootloader.bin $(BINARYFOLDER)/loader32.bin 8 $(KERNEL_IMG) 48
 
 include ../../build_common.mk
 	
