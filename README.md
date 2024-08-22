@@ -1,5 +1,13 @@
-# FOSD: Framework Of Operating System Development
-![Logo](./Logo.png)
+<p align="center">
+  <img alt="FOSD logo" src="https://raw.githubusercontent.com/fosd-project/FOSD/main/docs/Logo.png" width="546">
+</p>
+
+<p align="center">
+  Framework Of Operating System Development
+</p>
+
+---
+
 FOSD is an innovative and **flexible framework for operating system development**.
 
 It provides tools and resources that help developers efficiently and effectively design, develop, and deploy operating systems.
@@ -8,15 +16,10 @@ With its modular structure and user-friendly interface, FOSD offers an environme
 
 ## Key Features
 
-1. Flexibility:
-
 * **Modular design** supporting various operating system architectures.
-* Component-based structure that is easily extendable as needed.
-
-2. Efficiency:
-
-* Maximizes code reusability to reduce development time.
-* Provides optimized build systems and debugging tools.
+* **Component-based structure** that is easily extendable as needed.
+* **Maximizes code** reusability to reduce development time.
+* Provides **optimized build systems and debugging tools**.
 
 ## Key Components
 
