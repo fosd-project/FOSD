@@ -1,0 +1,6 @@
+test_*.cpp
+*.obj
+bin/
+OS.*
+*.code-workspace
+debug.log
