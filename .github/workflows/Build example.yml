@@ -17,3 +17,7 @@ jobs:
       run: sudo apt install nasm
     - name: Build
       run: make all
+    - uses: actions/upload-artifact@v3
+      with:
+        name: Output
+        path: output
