@@ -3,10 +3,12 @@
 # KERNEL_ELF    : Location to the kernel elf file
 # KERNEL_IMG    : Location to the kernel binary file
 
-LOADER_CC = x86_64-linux-gnu-gcc
-LOADER_LD = x86_64-linux-gnu-ld
+include $(ROOTDIR)/configurations.mk
+
+LOADER_CC = gcc
+LOADER_LD = ld
 LOADER_AS = nasm
-LOADER_OBJCOPY = x86_64-linux-gnu-objcopy
+LOADER_OBJCOPY = objcopy
 
 LOADER_CCOPTIONS = -m32 -Os -masm=intel -fno-builtin -fpack-struct=1 -fno-stack-protector \
 	-Wno-implicit-function-declaration \
@@ -25,7 +27,8 @@ INCLUDEPATHS = include
 
 LINK_OBJECTS = yes
 
-TARGET = OS.img
+TARGET_DIR=$(ROOTDIR)/output/$(ARCH)/$(IMAGE)
+TARGET = $(OUTPUT_FILENAME).img
 
 remove_target:
 	rm -rf $(TARGET_DIR)/$(TARGET)
@@ -37,6 +40,9 @@ build_final_image:
 	$(LOADER_OBJCOPY) -O binary $(LOADER_LD_OUT) $(BINARYFOLDER)/loader32.bin
 
 	./imgmaker $(TARGET_DIR)/$(TARGET) $(BINARYFOLDER)/bootloader.bin $(BINARYFOLDER)/loader32.bin 8 $(KERNEL_IMG) 48
+
+run_os: $(TARGET_DIR)/$(TARGET)
+	qemu-system-x86_64 -drive format=raw,file=$(TARGET_DIR)/$(TARGET)
 
 include ../../build_common.mk
 	

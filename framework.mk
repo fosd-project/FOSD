@@ -23,7 +23,7 @@ clean: remove_binaries
 	for build_dir in $(BUILD_TARGET_FOLDERS); do\
 		make -C $$build_dir clean $(MAKEFILE_ARGUMENTS); \
 	done
-	make -C $(LOADERFOLDER)/$(ARCH)/$(IMAGE) clean $(MAKEFILE_ARGUMENTS) TARGET_DIR=$(ROOTDIR)/..
+	make -C $(LOADERFOLDER)/$(ARCH)/$(IMAGE) clean $(MAKEFILE_ARGUMENTS) TARGET_DIR=./output/$(ARCH)/$(IMAGE)
 
 all: prepare build_all_directories build_kernel build_loader
 build_framework: prepare build_all_directories
@@ -42,6 +42,7 @@ build_kernel:
 
 build_loader:
 	@echo "$(shell tput bold)Building the final image...$(shell tput sgr0)"
-	make -C $(LOADERFOLDER)/$(ARCH)/$(IMAGE) all $(MAKEFILE_ARGUMENTS) TARGET_DIR=$(ROOTDIR)/.. KERNEL_IMG=$(ROOTDIR)/$(ROOTBINARYFOLDER)/$(KERNEL_IMG) KERNEL_ELF=$(ROOTDIR)/$(ROOTBINARYFOLDER)/$(KERNEL_ELF)
+	mkdir $(ROOTDIR)/output/$(ARCH)/$(IMAGE) -p
+	make -C $(LOADERFOLDER)/$(ARCH)/$(IMAGE) all $(MAKEFILE_ARGUMENTS) TARGET_DIR=$(ROOTDIR)/output/$(ARCH)/$(IMAGE) KERNEL_IMG=$(ROOTDIR)/$(ROOTBINARYFOLDER)/$(KERNEL_IMG) KERNEL_ELF=$(ROOTDIR)/$(ROOTBINARYFOLDER)/$(KERNEL_ELF)
 
 .PHONY: clean all

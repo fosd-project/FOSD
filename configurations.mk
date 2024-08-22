@@ -1,7 +1,7 @@
 ARCH = x86_64
-IMAGE = debugimgtype
+IMAGE = img
 
-KERNEL_COMPILER  = x86_64-elf
+KERNEL_COMPILER  =
 KERNEL_CCOPTIONS = -m64 -ffreestanding -nostdlib -mcmodel=large \
 -mcmodel=large -mno-red-zone -mno-mmx -mno-sse -mno-sse2 \
 -fpack-struct=1 -masm=intel \
@@ -14,7 +14,9 @@ KERNEL_LDOPTIONS = -m elf_x86_64 -nostdlib
 KERNEL_ASOPTIONS = -f elf64
 
 USER_SOURCESPATH  = examples/x86_64/HelloWorld
-USER_INCLUDEPATH  = 
+USER_INCLUDEPATH  =
+
+OUTPUT_FILENAME = OS
 
 # compiler settings
 
