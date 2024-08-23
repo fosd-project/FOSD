@@ -5,4 +5,4 @@ email, or any other method with the owners of this repository before making a ch
 
 ## Our Git Branch Strategy
 
-![Git Branch](./GitBranch.png)
+![Git Branch](./img/GitBranch.png)

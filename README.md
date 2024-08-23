@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="FOSD logo" src="https://raw.githubusercontent.com/fosd-project/FOSD/main/docs/Logo.png" width="546">
+  <img alt="FOSD logo" src="https://raw.githubusercontent.com/fosd-project/FOSD/main/docs/img/Logo.png" width="546">
 </p>
 
 <p align="center">
